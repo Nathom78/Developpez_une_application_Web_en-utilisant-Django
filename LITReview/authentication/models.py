@@ -78,15 +78,15 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: Yes, always
         return True
     
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.role == self.ADMINISTRATOR:
-            group = Group.objects.get(name='administrators')
-            group.user_set.add(self)
-        elif self.role == self.SUBSCRIBER:
-            group = Group.objects.get(name='subscribers')
-            group.user_set.add(self)
-    
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     if self.role == self.ADMINISTRATOR:
+    #         group = Group.objects.get(name='administrators')
+    #         group.user_set.add(self)
+    #     elif self.role == self.SUBSCRIBER:
+    #         group = Group.objects.get(name='subscribers')
+    #         group.user_set.add(self)
+    #
     @property
     def is_staff(self):
         "Is the user a member of staff?"
