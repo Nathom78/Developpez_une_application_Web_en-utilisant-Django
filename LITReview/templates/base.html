@@ -1,0 +1,36 @@
+</html>
+<html lang="fr">
+  <head>
+    <title>LITReviews</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Plateforme MVP">
+    <link href="../css/style.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+<!--          <a href="./index.html"><li>Accueil</li></a>-->
+<!--          <a href="./cart.html"><li>Panier</li></a>-->
+        </ul>
+      </nav>
+      <img class="banniere" src="../images/banniere.png" alt="Baniere">
+    </header>
+
+    <main class="">
+       <h1>LITReviews</h1>
+        {% block content %}{% endblock content %}
+        {% if user.is_authenticated %}
+            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
+        {% endif %}
+    </main>
+
+    <footer>
+
+    </footer>
+
+  </body>
+</html>
+<!--ajouter bootstrap 5-->
