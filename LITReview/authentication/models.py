@@ -1,22 +1,24 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import Group, PermissionsMixin
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class MyCustomManager(BaseUserManager):
     
-    def create_user(self, username, email="", password=None, **extra_fields):
+    def create_user(self, username, role, email, password=None, **extra_fields):
         """
-        Creates and saves a User with a UserName, and a password.
+        Creates and saves a User with a UserName, role(by default SUBSCRIBER), email(not obligatory) and a password.
         """
         
         if not username:
-            raise ValueError('Users must have an username address')
+            raise ValueError(_('Users must have an username'))
         username = MyUser.normalize_username(username)
         
         user = self.model(
             username=username,
             email=self.normalize_email(email),
+            role=role,
             **extra_fields
         )
         
@@ -24,16 +26,19 @@ class MyCustomManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, username, password=None, **extra_fields):
+    def create_superuser(self, username, email, password=None, **extra_fields):
         """
-        Creates and saves a superuser with the given username, and password.
+        Creates and saves a superuser with the given username, email(not obligatory) and password.
+        With role ADMINISTRATOR for superuser.
         """
         user = self.create_user(
             username=username,
+            email=email,
+            role='ADMINISTRATOR',
             password=password,
             **extra_fields
         )
-        user.groups.set('administrator')
+        
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -55,10 +60,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
         null=True,
-        blank=True
+        blank=True,
     )
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, default=SUBSCRIBER, verbose_name='Rôle')
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
     
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -78,22 +83,22 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: Yes, always
         return True
     
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     if self.role == self.ADMINISTRATOR:
-    #         group = Group.objects.get(name='administrators')
-    #         group.user_set.add(self)
-    #     elif self.role == self.SUBSCRIBER:
-    #         group = Group.objects.get(name='subscribers')
-    #         group.user_set.add(self)
-    #
+    def save(self, *args, **kwargs):
+        
+        if self.role == self.ADMINISTRATOR:
+            self.is_admin = True
+            super().save(*args, **kwargs)
+            group = Group.objects.get(name='administrators')
+            group.user_set.add(self)
+            
+        elif self.role == self.SUBSCRIBER:
+            super().save(*args, **kwargs)
+            group = Group.objects.get(name='subscribers')
+            group.user_set.add(self)
+
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
     
-    class Meta:
-        permissions = [
-            ('see_all', 'Can see all tickets and reviews')
-        ]

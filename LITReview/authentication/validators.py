@@ -10,10 +10,8 @@ class ContainsLetterValidator:
                 code="password_no_letters")
     
     def get_help_text(self):
-        return _(
-            "Your password must contain at least one uppercase or lowercase letter."
-        )
-
+        return _("Your password must contain at least one uppercase or lowercase letter.")
+    
 
 class ContainsNumberValidator:
     def validate(self, password, user=None):
@@ -24,9 +22,6 @@ class ContainsNumberValidator:
             )
     
     def get_help_text(self):
-        return _(
-            "Your password must contain at least one number."
-        )
-
-    def get_help_text(self):
-        return _("Your password can’t be entirely numeric.")
+        return _("Your password must contain at least one number.")
+    
+    

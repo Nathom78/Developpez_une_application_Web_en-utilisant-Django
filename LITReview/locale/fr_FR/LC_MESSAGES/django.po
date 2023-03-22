@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-16 14:38+0100\n"
+"PO-Revision-Date: 2023-03-16 15:28+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: .\authentication\forms.py:14
+msgid "Password"
+msgstr "Mot de passe"
+
+#: .\authentication\forms.py:15
+msgid "Password confirmation"
+msgstr "Confirmation du mot de passe"
+
+#: .\authentication\forms.py:26
+msgid "Passwords don't match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: .\authentication\models.py:15
+msgid "Users must have an username"
+msgstr "Les utilisateurs doivent avoir un nom d'utilisateur"
+
+#: .\authentication\templates\logged_out.html:6
+msgid "Thanks for spending some quality time with the web site today."
+msgstr "Merci d'avoir passé un peu de temps avec le site web aujourd'hui."
+
+#: .\authentication\templates\logged_out.html:8
+msgid "Log in again"
+msgstr "Se connecter de nouveau"
+
+#: .\authentication\templates\login.html:7
+msgid "Your username and password didn’t match. Please try again."
+msgstr "Votre nom d'utilisateur et votre mot de passe ne correspondent pas. Veuillez réessayer."
+
+#: .\authentication\templates\login.html:15
+msgid "Please login to see this page."
+msgstr "Veuillez vous connecter pour voir cette page."
+
+#: .\authentication\templates\login.html:23
+msgid "login"
+msgstr "Connexion"
+
+#: .\authentication\templates\login.html:26
+msgid "Not yet member ?"
+msgstr "Pas encore membre ?"
+
+#: .\authentication\templates\login.html:26
+msgid "Register now !"
+msgstr "Inscrivez-vous dès maintenant !"
+
+#: .\authentication\templates\login.html:28
+msgid "Lost password?"
+msgstr "Mot de passe oublié?"
+
+#: .\authentication\templates\password_change_done.html:4
+msgid "Your password was changed."
+msgstr "Votre mot de passe a été changé."
+
+#: .\authentication\templates\password_change_done.html:4
+msgid "here"
+msgstr "ici"
+
+#: .\authentication\templates\password_change_done.html:4
+msgid "to return to the home page."
+msgstr "Pour retourner à la page d'accueil."
+
+#: .\authentication\templates\password_change_form.html:7
+#: .\mvp\templates\home.html:5
+msgid "Change password"
+msgstr "Changer votre mot de passe"
+
+#: .\authentication\templates\password_reset_complete.html:6
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "Votre mot de passe à été modifié. Vous pouvez vous connecter, maintenant."
+
+#: .\authentication\templates\password_reset_complete.html:8
+msgid "Log in"
+msgstr "Connexion"
+
+#: .\authentication\templates\password_reset_confirm.html:6
+msgid "Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr "Veuillez entrer votre nouveau mot de passe deux fois afin que nous puissions vérifier que vous l'avez saisi correctement."
+
+#: .\authentication\templates\password_reset_confirm.html:13
+msgid "New password:"
+msgstr "Nouveau mot de passe:"
+
+#: .\authentication\templates\password_reset_confirm.html:18
+msgid "Confirm password:"
+msgstr "Confirmez le mot de passe:"
+
+#: .\authentication\templates\password_reset_confirm.html:21
+msgid "Change my password"
+msgstr "Changer mon mot de passe"
+
+#: .\authentication\templates\password_reset_confirm.html:26
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Le lien de réinitialisation du mot de passe n'était pas valide, peut-être parce qu'il a déjà été utilisé. Veuillez demander une nouvelle réinitialisation du mot de passe."
+
+#: .\authentication\templates\password_reset_done.html:8
+msgid "Check your inbox."
+msgstr "Vérifiez votre boite de réception."
+
+#: .\authentication\templates\password_reset_form.html:9
+msgid "Enter your email address below, and we’ll email instructions for setting a new one."
+msgstr "Veuillez entrer votre adresse e-mail, ci-dessous, et nous vous y enverrons des instructions, pour en créer un nouveau."
+
+#: .\authentication\templates\password_reset_form.html:15
+msgid "Email address:"
+msgstr "Adresse e-mail :"
+
+#: .\authentication\templates\password_reset_form.html:18
+msgid "Send me instructions !"
+msgstr "Envoyer moi les instructions !"
+
+#: .\authentication\templates\signup.html:11
+msgid "Sign Up"
+msgstr "S'inscrire"
+
+#: .\authentication\validators.py:9
+msgid "Password must contain a letter."
+msgstr "Le mot de passe doit contenir une lettre."
+
+#: .\authentication\validators.py:13
+msgid "Your password must contain at least one uppercase or lowercase letter."
+msgstr "Votre mot de passe doit contenir au moins une lettre majuscule ou minuscule."
+
+#: .\authentication\validators.py:20
+msgid "The password must contain a number"
+msgstr "Le mot de passe doit contenir un chiffre"
+
+#: .\authentication\validators.py:25
+msgid "Your password must contain at least one number."
+msgstr "Votre mot de passe doit contenir au moins un chiffre."
+
+#: .\mvp\templates\home.html:4
+msgid "You are connected !"
+msgstr "Tu es connecté !"
+
+#: .\templates\base.html:28
+msgid "Sign out"
+msgstr "Déconnexion"

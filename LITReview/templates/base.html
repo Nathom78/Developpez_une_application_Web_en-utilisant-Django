@@ -1,29 +1,69 @@
-</html>
-<html lang="fr">
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:'en_us' }}">
   <head>
-    <title>LITReviews</title>
+
     <meta charset="utf-8">
     <meta name="description" content="Plateforme MVP">
-    <link href="../css/style.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/png" href="../static/images/LITReview.png">
+
+    <!-- Page title -->
+    <title>{% block bootstrap5_title %}{% block title %}LITReview{% endblock %}{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+
+    <!-- Bootstrap JavaScript -->
+    {% bootstrap_javascript %}
+
+    {% block bootstrap5_extra_head %}{% endblock %}
+
+      <style>
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+      </style>
   </head>
 
-  <body>
-    <header>
-      <nav>
-        <ul>
-<!--          <a href="./index.html"><li>Accueil</li></a>-->
-<!--          <a href="./cart.html"><li>Panier</li></a>-->
-        </ul>
-      </nav>
-<!--      <img class="" src="" alt="Baniere">-->
-    </header>
+  <body class="container-fluid">
+    <div class="container-fluid">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex col-12 col-lg-4 mb-2 mb-lg-0">
+                <img class="d-block mx-auto" src="../static/images/LITReview.png" alt="logo" height="75px">
+            </a>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-end col-12 col-md-12 col-lg-4 ">
+                <ul class="nav nav-pills justify-content-center col-12 col-md-4 col-lg-8">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Features</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
+                </ul>
+                <div class="text-center text-md-end col-12 col-md-4 ">
+                    {% if user.is_authenticated %}
+                        <form class="mb-0" action="logout" >
+                            <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign out' %}</button>
+                        </form>
+                    {% else %}
+                    <form class="mb-0" action="/signup">
+                        <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign Up' %}</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+    </div>
 
-    <main class="">
-       <h1>LITReviews</h1>
+    <main class="container">
         {% block content %}{% endblock content %}
         {% if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
+            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">{% translate 'Sign out' %}</a></p>
         {% endif %}
     </main>
 

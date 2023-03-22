@@ -12,6 +12,9 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+For internalization url see 1.3):
+https://makina-corpus.com/django/internationalisation-avec-django
+
 """
 from django.contrib import admin
 from django.urls import path
@@ -24,7 +27,7 @@ import mvp.views
 
 
 urlpatterns = [
-    path('home/', mvp.views.home, name='home'),
+    path('', mvp.views.home, name='home'),
     path('about-us/', mvp.views.about),
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(

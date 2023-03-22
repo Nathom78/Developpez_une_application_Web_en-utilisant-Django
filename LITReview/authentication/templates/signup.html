@@ -1,13 +1,25 @@
+<!--# authentication/templates/authentication/signup.html-->
+
 {% extends "base.html" %}
 {% load i18n %}
+{% load django_bootstrap5 %}
 
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-  </form>
+
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <h2 class="text-center">{% translate 'Registration' %}</h2>
+      <div  class="col-md-10 mx-auto col-lg-5">
+
+        <form class="p-4 p-md-5 border rounded-3 bg-light" method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <button class="btn btn-primary" type="submit">{% translate 'Sign Up' %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 {% endblock content%}
