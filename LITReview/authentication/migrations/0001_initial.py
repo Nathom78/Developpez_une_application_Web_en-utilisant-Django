@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
                 ('username', models.CharField(max_length=40, unique=True)),
                 ('email', models.EmailField(blank=True, max_length=255, null=True, unique=True, verbose_name='email address')),
-                ('role', models.CharField(choices=[('ADMINISTRATOR', 'Administrateur'), ('SUBSCRIBER', 'Utilisateur')], default='SUBSCRIBER', help_text='ADMINISTRATOR or SUBSCRIBER', max_length=30, verbose_name='Rôle')),
+                ('role', models.CharField(choices=[('ADMINISTRATOR', 'Administrateur'), ('SUBSCRIBER', 'Utilisateur')], default='SUBSCRIBER', max_length=30, verbose_name='Rôle')),
                 ('is_active', models.BooleanField(default=True)),
                 ('is_admin', models.BooleanField(default=False)),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
