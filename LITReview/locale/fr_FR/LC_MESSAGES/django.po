@@ -148,8 +148,8 @@ msgid "Your password must contain at least one number."
 msgstr "Votre mot de passe doit contenir au moins un chiffre."
 
 #: .\mvp\templates\home.html:4
-msgid "You are connected !"
-msgstr "Tu es connecté !"
+msgid "You are connected"
+msgstr "Tu es connecté"
 
 #: .\templates\base.html:28
 msgid "Sign out"

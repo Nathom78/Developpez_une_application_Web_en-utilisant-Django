@@ -41,9 +41,9 @@
             </a>
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-end col-12 col-md-12 col-lg-4 ">
                 <ul class="nav nav-pills justify-content-center col-12 col-md-4 col-lg-8">
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Features</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Flux</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Posts</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Abonnements</a></li>
                 </ul>
                 <div class="text-center text-md-end col-12 col-md-4 ">
                     {% if user.is_authenticated %}
@@ -62,13 +62,12 @@
 
     <main class="container">
         {% block content %}{% endblock content %}
-        {% if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">{% translate 'Sign out' %}</a></p>
-        {% endif %}
+
     </main>
 
     <footer>
-
+        <p>{% translate 'You are connected' %} {{ request.user }}! </p>
+        <p><a href="{% url 'password_change' %}">{% translate 'Change password' %}</a></p>
     </footer>
 
   </body>

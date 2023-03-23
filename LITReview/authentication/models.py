@@ -55,6 +55,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         (ADMINISTRATOR, 'Administrateur'),
         (SUBSCRIBER, 'Utilisateur'),
     ]
+    REQUIRED_FIELDS = ['email']
+    
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -63,8 +65,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         blank=True,
     )
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, default=SUBSCRIBER, verbose_name='Rôle')
-    REQUIRED_FIELDS = ['email']
-    
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     
