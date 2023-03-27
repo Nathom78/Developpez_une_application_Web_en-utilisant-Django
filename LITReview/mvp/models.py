@@ -43,7 +43,7 @@ class UserFollows(models.Model):
                                       related_name='following_by')
     
     def __str__(self):
-        return self.user.username
+        return f"'user': {self.user.username}, 'followed_user':{self.followed_user.username}"
     
     class Meta:
         # ensures we don't get multiple UserFollows instances for unique user-user_followed pairs

@@ -33,8 +33,8 @@ urlpatterns = [
         template_name='login.html',
         redirect_authenticated_user=True),
          name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path("signup/", authentication.views.SignUpView.as_view(), name="signup"),
+    path('logout/', LogoutView.as_view(template_name="logged_out.html"), name='logout'),
+    path("signup/", authentication.views.SignUpView.as_view(template_name="signup.html"), name="signup"),
     path('password_change/', PasswordChangeView.as_view(
         template_name='password_change_form.html'),
          name='password_change'
@@ -63,4 +63,5 @@ urlpatterns = [
     # path('reset/done', PasswordResetCompleteView.as_view(
     #      template_name='password_reset_complete.html'),
     #      name='password_reset_complete')
+    path('subscription/', mvp.views.FollowUsers.as_view(), name='subscription'),
 ]

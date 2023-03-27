@@ -36,28 +36,28 @@
   <body class="container-fluid">
     <div class="container-fluid">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end py-3 mb-4 border-bottom">
-            <a href="/" class="d-flex col-12 col-lg-4 mb-2 mb-lg-0">
-                <img class="d-block mx-auto" src="../static/images/LITReview.png" alt="logo" height="75px">
-            </a>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-end col-12 col-md-12 col-lg-4 ">
-                <ul class="nav nav-pills justify-content-center col-12 col-md-4 col-lg-8">
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-secondary">Flux</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Posts</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Abonnements</a></li>
-                </ul>
-                <div class="text-center text-md-end col-12 col-md-4 ">
-                    {% if user.is_authenticated %}
-                        <form class="mb-0" action="logout" >
-                            <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign out' %}</button>
+                <a href="/" class="d-flex col-12 col-lg-4 mb-2 mb-lg-0">
+                    <img class="d-block mx-auto" src="../static/images/LITReview.png" alt="logo" height="75px">
+                </a>
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-end col-12 col-md-12 col-lg-4 ">
+                    <ul class="nav nav justify-content-center col-12 col-md-4 col-lg-8">
+                        <li class="nav-item"><a href="#" class="nav-link px-2 link-dark" >Flux</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link px-2 link-dark">Posts</a></li>
+                        <li class="nav-item"><a href="{% url 'subscription' %}" class="nav-link px-2 link-dark">Abonnements</a></li>
+                    </ul>
+                    <div class="text-center text-md-end col-12 col-md-4 ">
+                        {% if user.is_authenticated %}
+                            <form class="mb-0" action="/logout" >
+                                <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign out' %}</button>
+                            </form>
+                        {% else %}
+                        <form class="mb-0" action="/signup">
+                            <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign Up' %}</button>
                         </form>
-                    {% else %}
-                    <form class="mb-0" action="/signup">
-                        <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign Up' %}</button>
-                    </form>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header>
     </div>
 
     <main class="container">
@@ -65,7 +65,7 @@
 
     </main>
 
-    <footer>
+    <footer class="fixed-bottom bg-body-tertiary text-body-secondary p-2  border-top">
         <p>{% translate 'You are connected' %} {{ request.user }}! </p>
         <p><a href="{% url 'password_change' %}">{% translate 'Change password' %}</a></p>
     </footer>
