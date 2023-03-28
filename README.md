@@ -47,7 +47,10 @@ tzdata     2022.7
 
 Superuser : Thom / Thomas78190
 
-
+Users: Password: Thomas78190,
+- Kathy
+- Thomtest
+- Toto
 
 
 ## Technologies
