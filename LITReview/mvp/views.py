@@ -1,11 +1,14 @@
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.translation import gettext as _
 from django.shortcuts import render, redirect
 from django.views import View
 from itertools import chain
 from django.db.models import CharField, Value
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import UserFollows
 
@@ -34,8 +37,7 @@ def feed(request):
     return render(request, 'feed.html', context={'posts': posts})
 
 
-# @login_required
-class FollowUsers(View):
+class FollowUsers(LoginRequiredMixin, View):
     template_name = 'follow_users_forms.html'
     User = get_user_model()
     user_searching = User.objects.all()
@@ -71,12 +73,18 @@ class FollowUsers(View):
         
         if 'add' in request.POST:
             name = request.POST.getlist('add')[0]
-            followed_user = self.user_searching.get(username=name)
-            if followed_user in other_users:
-                if not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists():
-                    new_followed = UserFollows.objects.create(user=request.user, followed_user=followed_user)
-                    return redirect('subscription')
-        
+            try:
+                followed_user = self.user_searching.get(username=name)
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.ERROR, _("User doesn't exist."))
+            else:
+                if followed_user in other_users:
+                    if not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists():
+                        new_followed = UserFollows.objects.create(user=request.user, followed_user=followed_user)
+                        return redirect('subscription')
+                elif followed_user == request.user:
+                    messages.add_message(request, messages.ERROR, _("It can't be yourself."))
+                
         if 'Unsubscribe' in request.POST:
             name = request.POST.get('Unsubscribe')
             user_followed = self.user_searching.get(username=name)
