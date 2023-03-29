@@ -22,46 +22,70 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView,
     PasswordResetConfirmView, PasswordResetCompleteView)
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 import authentication.views
 import mvp.views
-
 
 urlpatterns = [
     path('home', mvp.views.home, name='home'),
     path('admin/', admin.site.urls),
-    path('', LoginView.as_view(
-        template_name='login.html',
-        redirect_authenticated_user=True),
-         name='login'),
+    path(
+        '', LoginView.as_view(
+            template_name='login.html',
+            redirect_authenticated_user=True
+        ),
+        name='login'
+        ),
     path('logout/', LogoutView.as_view(template_name="logged_out.html"), name='logout'),
     path("signup/", authentication.views.SignUpView.as_view(template_name="signup.html"), name="signup"),
-    path('password_change/', PasswordChangeView.as_view(
-        template_name='password_change_form.html'),
-         name='password_change'
-         ),
-    path('password_change/done/', PasswordChangeDoneView.as_view(
-        template_name='password_change_done.html'),
-         name='password_change_done'
-         ),
-    path('password_reset/', PasswordResetView.as_view(
-        template_name='password_reset_form.html',
-        email_template_name='password_reset_email.html',
-        subject_template_name='password_reset_subject.txt'
+    path(
+        'password_change/', PasswordChangeView.as_view(
+            template_name='password_change_form.html'
         ),
-         name='password_reset'
+        name='password_change'
         ),
-    path('password_reset/done/', PasswordResetDoneView.as_view(
-        template_name='password_reset_done.html'),
-         name='password_reset_done'),
-    path('password_reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
-        template_name='password_reset_confirm.html',
-        post_reset_login=True,
-        success_url='home'
+    path(
+        'password_change/done/', PasswordChangeDoneView.as_view(
+            template_name='password_change_done.html'
         ),
-         name='password_reset_confirm'),
+        name='password_change_done'
+        ),
+    path(
+        'password_reset/', PasswordResetView.as_view(
+            template_name='password_reset_form.html',
+            email_template_name='password_reset_email.html',
+            subject_template_name='password_reset_subject.txt'
+        ),
+        name='password_reset'
+        ),
+    path(
+        'password_reset/done/', PasswordResetDoneView.as_view(
+            template_name='password_reset_done.html'
+        ),
+        name='password_reset_done'
+        ),
+    path(
+        'password_reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
+            template_name='password_reset_confirm.html',
+            post_reset_login=True,
+            success_url='home'
+        ),
+        name='password_reset_confirm'
+        ),
+    
     # If case post_reset_login=default and success_url=default we can use reset/done (complete)
     # path('reset/done', PasswordResetCompleteView.as_view(
     #      template_name='password_reset_complete.html'),
     #      name='password_reset_complete')
-    path('subscription/', mvp.views.FollowUsers.as_view(), name='subscription'),
+    path(
+        'subscription/', mvp.views.FollowUsers.as_view(template_name='mvp/follow_users_forms.html'), name='subscription'
+        ),
+    path('stream/', mvp.views.Stream.as_view(template_name='mvp/stream.html'), name='stream'),
+    path('create_ticket', mvp.views.MyFormCreateTicketView.as_view(), name='create_ticket'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

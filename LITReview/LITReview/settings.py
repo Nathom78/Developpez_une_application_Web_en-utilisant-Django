@@ -54,12 +54,13 @@ ROOT_URLCONF = 'LITReview.urls'
 
 TEMPLATES = [
     {
-        'BACKEND' : 'django.template.backends.django.DjangoTemplates',
-        'DIRS'    : [
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
             BASE_DIR.joinpath('templates'),
+            
         ],
         'APP_DIRS': True,
-        'OPTIONS' : {
+        'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',

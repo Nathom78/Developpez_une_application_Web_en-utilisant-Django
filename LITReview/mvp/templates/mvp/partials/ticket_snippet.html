@@ -1,0 +1,9 @@
+{% load mvp_extras %}
+{% load i18n %}
+<div class="lh-1 p-1 p-md-2 border rounded-3 bg-light my-2 ">
+    <p class="fw-light text-end">{{ ticket.time_created }}</p>
+    <p>{% get_poster_display ticket.user %} {% translate 'have asked one ticket' %}</p>
+    <p>{{ ticket.title }}</p>
+    <p>{{ ticket.description }}</p>
+    <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
+</div>

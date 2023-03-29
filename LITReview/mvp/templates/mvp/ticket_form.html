@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+{% block title %}{% translate 'Create a ticket' %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="px-4 py-2 my-5 text-center">
+        <h2>{% translate 'Create a ticket' %}</h2>
+        <form class="p-4 p-md-5 border rounded-3 bg-light mt-3" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" class="form-control" value="Save">
+        </form>
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        {% bootstrap_alert message.message|default:"" alert_type=message|bootstrap_message_alert_type extra_classes=message.extra_tags %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}
