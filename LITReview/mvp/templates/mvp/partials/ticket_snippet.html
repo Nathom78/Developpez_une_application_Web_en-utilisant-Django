@@ -1,9 +1,24 @@
-{% load mvp_extras %}
+{% load get_poster_display from mvp_extras %}
+{% load mvp_extras_review %}
 {% load i18n %}
 <div class="lh-1 p-1 p-md-2 border rounded-3 bg-light my-2 ">
     <p class="fw-light text-end">{{ ticket.time_created }}</p>
     <p>{% get_poster_display ticket.user %} {% translate 'have asked one ticket' %}</p>
-    <p>{{ ticket.title }}</p>
+    <h5>{{ ticket.title }}</h5>
     <p>{{ ticket.description }}</p>
-    <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
+    <div class="d-flex  justify-content-center">
+         <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
+    </div>
+    <div class="m-3 text-end">
+        {% if not ticket|review_exist %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="col-2 btn btn-primary" name="goto" value="{{ ticket.id }}">
+                    {% translate 'Create a review' %}
+                </button>
+            </form>
+
+        {% endif %}
+    </div>
+
 </div>

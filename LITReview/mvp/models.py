@@ -9,7 +9,7 @@ class Ticket(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(null=True, blank=True, verbose_name='image')
+    image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
 
     IMAGE_MAX_SIZE = (800, 800)
@@ -22,7 +22,6 @@ class Ticket(models.Model):
         image.save(self.image.path)
 
     def save(self, *args, **kwargs):
-        print(self)
         super().save(*args, **kwargs)
         self.resize_image()
 

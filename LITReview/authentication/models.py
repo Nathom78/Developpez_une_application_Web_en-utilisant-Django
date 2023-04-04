@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MyCustomManager(BaseUserManager):
+    def get_by_natural_key(self, username):
+        case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
+        return self.get(**{case_insensitive_username_field: username})
     
     def create_user(self, username, role, email, password=None, **extra_fields):
         """
@@ -46,7 +49,6 @@ class MyCustomManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=40, unique=True)
-    
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     ADMINISTRATOR = 'ADMINISTRATOR'
@@ -90,15 +92,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
             super().save(*args, **kwargs)
             group = Group.objects.get(name='administrators')
             group.user_set.add(self)
-            
+        
         elif self.role == self.SUBSCRIBER:
             super().save(*args, **kwargs)
             group = Group.objects.get(name='subscribers')
             group.user_set.add(self)
-
+    
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-    

@@ -28,6 +28,20 @@ class UserCreationForm(forms.ModelForm):
         model = MyUser
         fields = ('username', 'email', 'role')
     
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if get_user_model().objects.filter(username__iexact=username) \
+                .exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(_(u'The username ‘{}’ is already in use.'.format(username)))
+        return username.capitalize()
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if get_user_model().objects.filter(email__iexact=email) \
+                .exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(_(u'The email ‘{}’ is already in use.'.format(email)))
+        return email
+    
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -74,6 +88,20 @@ class UserChangeForm(forms.ModelForm):
     disabled password hash display field.
     """
     password = ReadOnlyPasswordHashField()
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if get_user_model().objects.filter(username__iexact=username) \
+                .exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(_(u'The username ‘{}’ is already in use.'.format(username)))
+        return username.capitalize()
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if get_user_model().objects.filter(email__iexact=email) \
+                .exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(_(u'The email ‘{}’ is already in use.'.format(email)))
+        return email
     
     class Meta:
         model = MyUser
