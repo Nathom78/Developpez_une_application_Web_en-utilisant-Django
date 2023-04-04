@@ -221,6 +221,7 @@ class FollowUsers(LoginRequiredMixin, View):
 #         form2 = PersonForm(prefix='person')
 #     return render(request, 'name.html', {'form1': form1, 'form2': form2})
 
+
 # class MyFormView(View):
 #     form_class = MyForm
 #     initial = {'key': 'value'}
