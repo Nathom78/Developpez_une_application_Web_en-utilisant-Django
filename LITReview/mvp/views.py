@@ -72,7 +72,9 @@ class Stream(LoginRequiredMixin, ListView):
             ticket = request.POST.get('goto')
             print(request)
             print(ticket)
-            return redirect( r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
+            return redirect(MyFormsCreateReviewView(ticket))
+            
+                # r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
     #
     
     # class BookListView(generic.ListView):
