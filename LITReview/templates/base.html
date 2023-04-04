@@ -2,73 +2,64 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
+{% load static %}
 <html lang="{{ LANGUAGE_CODE|default:'en_us' }}">
-  <head>
+      <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Plateforme MVP">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta charset="utf-8">
-    <meta name="description" content="Plateforme MVP">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/png" href="{% static '/images/LITReview.png' %}">
 
-    <link rel="shortcut icon" type="image/png" href="../static/images/LITReview.png">
+        <!-- Page title -->
+        <title>{% block bootstrap5_title %}{% block title %}LITReview{% endblock %}{% endblock %}</title>
 
-    <!-- Page title -->
-    <title>{% block bootstrap5_title %}{% block title %}LITReview{% endblock %}{% endblock %}</title>
+        <!-- Bootstrap CSS -->
+        {% bootstrap_css %}
 
-    <!-- Bootstrap CSS -->
-    {% bootstrap_css %}
+        <!-- Bootstrap JavaScript -->
+        {% bootstrap_javascript %}
 
-    <!-- Bootstrap JavaScript -->
-    {% bootstrap_javascript %}
-
-    {% block bootstrap5_extra_head %}{% endblock %}
-
-      <style>
-        .b-example-divider {
-            height: 3rem;
-            background-color: rgba(0, 0, 0, .1);
-            border: solid rgba(0, 0, 0, .15);
-            border-width: 1px 0;
-            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-      </style>
-  </head>
+        {% block bootstrap5_extra_head %}{% endblock %}
+      </head>
 
   <body class="container-fluid">
-    <div class="container">
+    <div class="container-lg">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end py-3 mb-4 border-bottom">
-                <a href="/" class="d-flex col-12 col-lg-4 mb-2 mb-lg-0">
-                    <img class="d-block mx-auto" src="../static/images/LITReview.png" alt="logo" height="75px">
-                </a>
-                <nav class="navbar d-flex flex-wrap align-items-center justify-content-center justify-content-md-end col-12 col-md-12 col-lg-4 ">
-                    <ul class="nav justify-content-center col-12 col-md-4 col-lg-9 ">
-                        <li class="nav-item"><a href="{% url 'stream' %}" class="nav-link link-secondary px-2 " >Flux</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link link-secondary px-2">Posts</a></li>
-                        <li class="nav-item"><a href="{% url 'subscription' %}" class="nav-link link-secondary px-2">Abonnements</a></li>
-                    </ul>
-                    <div class="text-center text-md-end col-12 col-md-4 col-lg-3 ">
-                        {% if user.is_authenticated %}
-                            <form class="mb-0" action="/logout" >
-                                <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign out' %}</button>
-                            </form>
-                        {% else %}
-                        <form class="mb-0" action="/signup">
-                            <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign Up' %}</button>
+            <a href="/" class="d-flex col-12 col-lg-4 px-0 mb-0">
+                <img class="d-block mx-auto" src="{% static '/images/LITReview.png' %} " alt="logo" height="75px">
+            </a>
+            <nav class="navbar d-flex align-items-center justify-content-center justify-content-md-end col-12 col-lg-4">
+                <ul class="nav justify-content-center col-12 col-md-4 col-lg-9 ">
+                    <li class="nav-item"><a href="{% url 'stream' %}" class="nav-link link-secondary px-2 " >Flux</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-secondary px-2">Posts</a></li>
+                    <li class="nav-item"><a href="{% url 'subscription' %}" class="nav-link link-secondary px-2">Abonnements</a></li>
+                </ul>
+                <div class="text-center text-md-end col-12 col-md-4 col-lg-3 ">
+                    {% if user.is_authenticated %}
+                        <form class="mb-0" action="/logout" >
+                            <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign out' %}</button>
                         </form>
-                        {% endif %}
-                    </div>
-                </nav>
-            </header>
+                    {% else %}
+                    <form class="mb-0" action="/signup">
+                        <button type="submit" class="btn btn-primary btn-sm">{% translate 'Sign Up' %}</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+
+
+        <main class="container-fluid mb-5 pb-4">
+            {% block content %}
+            {% endblock content %}
+        </main>
+
+        <footer class="fixed-bottom bg-body-tertiary text-body-secondary p-2 border-top">
+            <p>{% translate 'You are connected' %} {{ request.user }}! </p>
+            <p><a href="{% url 'password_change' %}">{% translate 'Change password' %}</a></p>
+        </footer>
     </div>
-
-    <main class="container-fluid mb-5 pb-4">
-        {% block content %}
-        {% endblock content %}
-    </main>
-
-    <footer class="fixed-bottom bg-body-tertiary text-body-secondary p-2 border-top">
-        <p>{% translate 'You are connected' %} {{ request.user }}! </p>
-        <p><a href="{% url 'password_change' %}">{% translate 'Change password' %}</a></p>
-    </footer>
   </body>
 </html>
 <!--ajouter bootstrap 5-->

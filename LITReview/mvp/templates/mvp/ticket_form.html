@@ -9,9 +9,9 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="px-4 py-2 my-5 text-center">
+    <div class="px-4 py-3 my-4 text-center">
         <h2>{% translate 'Create a ticket' %}</h2>
-        <form class="p-4 p-md-5 border rounded-3 bg-light mt-3" method="post" enctype="multipart/form-data" >
+        <form class="p-4 p-md-4 border rounded-3 bg-light mt-3" method="post" enctype="multipart/form-data" >
             {% csrf_token %}
             {% bootstrap_form form %}
             <input type="submit" class="form-control" value="Save">

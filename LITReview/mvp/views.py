@@ -1,27 +1,80 @@
-from django.http import HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views import View
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext as _
-from django.shortcuts import render, redirect
-from itertools import chain
+from django.shortcuts import render, redirect, reverse
 from django.db.models import CharField, Value
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+
+from itertools import chain
 
 from .models import UserFollows, Ticket, Review
+from .forms import ReviewForm, TicketForm
+
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
+
+
+def get_users_viewable_reviews(the_user):
+    """
+    Take User for return all reviews who can see, else all if administrator, or just followed users' reviews
+    """
+    all_user_follows = UserFollows.objects.filter(user=the_user)
+    all_user_permitted = [couple.followed_user for couple in all_user_follows] + [the_user]
+    reviews = Review.objects.filter(user__in=all_user_permitted)
+    if the_user.groups.filter(name='administrators').exists():
+        reviews = Review.objects.all()
+    return reviews
+
+
+def get_users_viewable_tickets(the_user):
+    """
+    Take User for return all reviews who can see, else all if administrator, or just followed users' reviews
+    """
+    all_user_follows = UserFollows.objects.filter(user=the_user)
+    all_user_permitted = [couple.followed_user for couple in all_user_follows] + [the_user]
+    tickets = Ticket.objects.filter(user__in=all_user_permitted)
+    if the_user.groups.filter(name='administrators').exists():
+        tickets = Ticket.objects.all()
+    return tickets
 
 
 class Stream(LoginRequiredMixin, ListView):
-    # la liste des objets que cette vue va afficher. Si context_object_name est renseigné,
-    # cette variable sera également définie dans le contexte, avec le même contenu que object_list.
-    model = Ticket
-    object_list = []
-    paginate_by = 2
+    http_method_names = ['get', 'post', ]
+    paginate_by = 4
+    
+    def get_queryset(self):
+        reviews = get_users_viewable_reviews(self.request.user)
+        # returns queryset of reviews
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        
+        tickets = get_users_viewable_tickets(self.request.user)
+        # returns queryset of tickets
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+        
+        # combine and sort the two types of posts
+        posts = sorted(
+            chain(reviews, tickets),
+            key=lambda post: post.time_created,
+            reverse=True
+        )
+        return posts
+    
+    def post(self, request, *args, **kwargs):
+        if 'goto' in request.POST:
+            ticket = request.POST.get('goto')
+            print(request)
+            print(ticket)
+            return redirect( r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
+    #
+    
     # class BookListView(generic.ListView):
     #     model = Book
     #
@@ -33,28 +86,67 @@ class Stream(LoginRequiredMixin, ListView):
     #         return context
 
 
-@login_required
-def home(request):
-    return render(request, 'home.html')
+class MyFormCreateTicketView(LoginRequiredMixin, CreateView):
+    model = Ticket
+    fields = ['title', 'description', 'image']
+    success_url = 'stream'
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(MyFormCreateTicketView, self).form_valid(form)
 
 
-@login_required
-def feed(request):
-    reviews = get_users_viewable_reviews(request.user)
-    # returns queryset of reviews
-    reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+class MyFormsCreateTicketReviewView(LoginRequiredMixin, CreateView):
+    form_class_ticket = TicketForm
+    form_class = ReviewForm
+    template_name = 'mvp/ticket_review_form.html'
+    success_url = 'stream'
     
-    tickets = get_users_viewable_tickets(request.user)
-    # returns queryset of tickets
-    tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+    def get_context_data(self, **kwargs):
+        
+        context_data = super(MyFormsCreateTicketReviewView, self).get_context_data(**kwargs)
+        context_data.update(
+            {
+                'ticket_form': self.form_class_ticket,
+            }
+        )
+        return context_data
     
-    # combine and sort the two types of posts
-    posts = sorted(
-        chain(reviews, tickets),
-        key=lambda post: post.time_created,
-        reverse=True
-    )
-    return render(request, 'feed.html', context={'posts': posts})
+    def post(self, request, *args, **kwargs):
+        form_review = self.get_form(form_class=ReviewForm)
+        form_ticket = self.get_form(form_class=TicketForm)
+        
+        if form_ticket.is_valid():
+            form_ticket.instance.user = self.request.user
+            form_ticket.save()
+        
+        if form_review.is_valid():
+            form_review.instance.user = self.request.user
+            form_review.instance.ticket = Ticket.objects.get(id=form_ticket.instance.id)
+            return self.form_valid(form_review)
+        else:
+            return self.form_invalid(form_review)
+
+
+class MyFormsCreateReviewView(LoginRequiredMixin, CreateView):
+    
+    def __init__(self, ticket, *args, **kwargs):
+        super(CreateView, self).__init__(*args, **kwargs)
+        self.ticket = ticket
+    
+    form_class = ReviewForm
+    template_name = 'mvp/review_form.html'
+    success_url = 'stream'
+    
+    def get_context_data(self, **kwargs):
+        ticket = Ticket.object.get(pk=self.ticket.id)
+        context_data = super(MyFormsCreateReviewView, self).get_context_data(**kwargs)
+        context_data.update(
+            {
+                'ticket_form': ticket,
+            }
+        )
+        return context_data
 
 
 class FollowUsers(LoginRequiredMixin, View):
@@ -100,7 +192,9 @@ class FollowUsers(LoginRequiredMixin, View):
             else:
                 if followed_user in other_users:
                     if not UserFollows.objects.filter(user=request.user, followed_user=followed_user).exists():
-                        new_followed = UserFollows.objects.create(user=request.user, followed_user=followed_user)
+                        new_user_follows = UserFollows(user=request.user, followed_user=followed_user)
+                        new_user_follows.save()
+                        # UserFollows.objects.create(user=request.user, followed_user=followed_user)
                         return redirect('subscription')
                 elif followed_user == request.user:
                     messages.add_message(request, messages.ERROR, _("It can't be yourself."))
@@ -113,17 +207,17 @@ class FollowUsers(LoginRequiredMixin, View):
         
         return render(request, self.template_name, context=context)
 
-
-class MyFormCreateTicketView(LoginRequiredMixin, CreateView):
-    model = Ticket
-    fields = ['title', 'description', 'image']
-    success_url = 'stream'
-    
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(MyFormCreateTicketView, self).form_valid(form)
-       
-        
+# def get_name(request):
+#     if request.method == 'POST':
+#         form1 = NameForm(request.POST, prefix='name')
+#         form2 = PersonForm(request.POST, prefix='person')
+#         if form1.is_valid() and form2.is_valid():
+#             # ...
+#             return HttpResponseRedirect('/thanks/')
+#     else:
+#         form1 = NameForm(prefix='name')
+#         form2 = PersonForm(prefix='person')
+#     return render(request, 'name.html', {'form1': form1, 'form2': form2})
 
 # class MyFormView(View):
 #     form_class = MyForm

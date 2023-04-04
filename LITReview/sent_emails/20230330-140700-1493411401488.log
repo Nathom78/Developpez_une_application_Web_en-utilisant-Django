@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on 127.0.0.1:8000 by Thomas
+From: webmaster@localhost
+To: Kathy@Django.com
+Date: Thu, 30 Mar 2023 12:07:00 -0000
+Message-ID: <168017802057.17948.6653647829063877933@Thomas11>
+
+
+Vous recevez ce message en réponse à votre demande de réinitialisation du mot de passe de votre compte sur 127.0.0.1:8000.
+
+Veuillez vous rendre sur cette page et choisir un nouveau mot de passe :
+
+http://127.0.0.1:8000/password_reset/confirm/NA/blvojo-6a87f2ef4a1cb7340b00e3eca78c8ef9/
+
+Votre nom d’utilisateur, en cas d’oubli : Kathy
+
+Merci d’utiliser notre site !
+
+L’équipe 127.0.0.1:8000
+
+
+
+-------------------------------------------------------------------------------

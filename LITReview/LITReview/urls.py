@@ -70,7 +70,7 @@ urlpatterns = [
         'password_reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
             template_name='password_reset_confirm.html',
             post_reset_login=True,
-            success_url='home'
+            success_url='/home'
         ),
         name='password_reset_confirm'
         ),
@@ -84,6 +84,9 @@ urlpatterns = [
         ),
     path('stream/', mvp.views.Stream.as_view(template_name='mvp/stream.html'), name='stream'),
     path('create_ticket', mvp.views.MyFormCreateTicketView.as_view(), name='create_ticket'),
+    path('create_ticket_review', mvp.views.MyFormsCreateTicketReviewView.as_view(), name='create_ticket_review'),
+    
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(
