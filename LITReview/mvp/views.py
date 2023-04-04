@@ -74,6 +74,7 @@ class Stream(LoginRequiredMixin, ListView):
             print(ticket)
             return redirect(MyFormsCreateReviewView(ticket))
             
+            
                 # r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
     #
     
