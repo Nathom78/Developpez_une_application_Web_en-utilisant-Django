@@ -1,0 +1,32 @@
+{% load get_range_one_to_x get_poster_display from mvp_extras %}
+{% load i18n %}
+<div class="lh-1 p-1 p-md-2 border rounded-3 bg-light my-2 ">
+    <p class="fw-light text-end">{{ review.time_created }}</p>
+    <p>{% get_poster_display review.user %} {% translate 'have publied one review' %}</p>
+    <h4>{{ review.headline }} -
+    {% for i in 5|get_range_one_to_x %}
+        {% if i <= review.rating %}
+            <i class="bi bi-star-fill"></i>
+        {% else %}
+            <i class="bi bi-star"></i>
+        {% endif %}
+    {% endfor %}</h4>
+    <p>{{ review.body }}</p>
+    <div class="lh-1 px-1 py-2 border border-dark-subtle rounded-3 bg-white m-2 ">
+        <p class="fw-light text-end">{{ review.ticket.time_created }}</p>
+        <p>{% get_poster_display review.ticket.user %} {% translate 'have asked one ticket' %}</p>
+        <h5>{{ review.ticket.title }}</h5>
+        <p>{{ review.ticket.description }}</p>
+        <div class="d-flex  justify-content-center">
+            <img class="img-fluid" src="{{ review.ticket.image.url }}" alt="image-{{ review.ticket.title }}">
+        </div>
+    </div>
+    <div class="m-3 text-end">
+        <a href="{% url 'MyFormUpdateReviewView' review.id %}" class="col-2 btn btn-primary">
+            {% translate 'Edit' %}
+        </a>
+        <a href="{% url 'MyFormDeleteReviewView' review.id %}" class="col-2 btn btn-primary">
+            {% translate 'Delete' %}
+        </a>
+    </div>
+</div>

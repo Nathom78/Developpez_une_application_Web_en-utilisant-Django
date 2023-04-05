@@ -1,6 +1,6 @@
 from django.views.generic.list import ListView
 from django.views import View
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext as _
 from django.shortcuts import render, redirect, reverse
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
 from django.db.models import Q
 
 from itertools import chain
@@ -27,10 +28,11 @@ def get_users_viewable_reviews(the_user):
     Take User for return all reviews who can see, else all if administrator, or just followed users' reviews
     """
     all_user_follows = UserFollows.objects.filter(user=the_user)
-    all_user_permitted = [couple.followed_user for couple in all_user_follows] + [the_user]
+    all_user_permitted = [couple.followed_user for couple in all_user_follows]
+    print(all_user_permitted)
     reviews = Review.objects.filter(user__in=all_user_permitted)
     if the_user.groups.filter(name='administrators').exists():
-        reviews = Review.objects.all()
+        reviews = Review.objects.exclude(user=the_user)
     return reviews
 
 
@@ -39,15 +41,15 @@ def get_users_viewable_tickets(the_user):
     Take User for return all reviews who can see, else all if administrator, or just followed users' reviews
     """
     all_user_follows = UserFollows.objects.filter(user=the_user)
-    all_user_permitted = [couple.followed_user for couple in all_user_follows] + [the_user]
+    all_user_permitted = [couple.followed_user for couple in all_user_follows]
+    print(all_user_permitted)
     tickets = Ticket.objects.filter(user__in=all_user_permitted)
     if the_user.groups.filter(name='administrators').exists():
-        tickets = Ticket.objects.all()
+        tickets = Ticket.objects.exclude(user=the_user)
     return tickets
 
 
 class Stream(LoginRequiredMixin, ListView):
-    http_method_names = ['get', 'post', ]
     paginate_by = 4
     
     def get_queryset(self):
@@ -66,26 +68,6 @@ class Stream(LoginRequiredMixin, ListView):
             reverse=True
         )
         return posts
-    
-    # def post(self, request, *args, **kwargs):
-    #     if 'goto' in request.POST:
-    #         ticket = request.POST.get('goto')
-    #         print(request)
-    #         print(ticket)
-    #         return render(request, 'MyFormsCreateReviewView', {'ticket': ticket})
-            
-            # r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
-    #
-    
-    # class BookListView(generic.ListView):
-    #     model = Book
-    #
-    #     def get_context_data(self, **kwargs):
-    #         # Call the base implementation first to get the context
-    #         context = super(BookListView, self).get_context_data(**kwargs)
-    #         # Create any data and add it to the context
-    #         context['some_data'] = 'This is just some data'
-    #         return context
 
 
 class MyFormCreateTicketView(LoginRequiredMixin, CreateView):
@@ -158,6 +140,55 @@ class MyFormsCreateReviewView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
 
+class Posts(LoginRequiredMixin, ListView):
+    paginate_by = 4
+    
+    def get_queryset(self):
+        reviews = Review.objects.filter(user=self.request.user)
+        # returns queryset of reviews
+        reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+        
+        tickets = Ticket.objects.filter(user=self.request.user)
+        # returns queryset of tickets
+        tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+        
+        # combine and sort the two types of posts
+        posts = sorted(
+            chain(reviews, tickets),
+            key=lambda post: post.time_created,
+            reverse=True
+        )
+        return posts
+
+
+class MyFormUpdateTicketView(LoginRequiredMixin, UpdateView):
+    model = Ticket
+    form_class = TicketForm
+    success_url = '/posts'
+
+
+class MyFormDeleteTicketView(LoginRequiredMixin, DeleteView):
+    model = Ticket
+    success_url = '/posts'
+    
+    def delete(self, using=None, keep_parents=False):
+        self.image.delete()
+        super().delete()
+
+
+class MyFormUpdateReviewView(LoginRequiredMixin, UpdateView):
+    model = Review
+    form_class = ReviewForm
+    success_url = reverse_lazy('/posts')
+    
+   
+
+class MyFormDeleteReviewView(LoginRequiredMixin, DeleteView):
+    model = Review
+    form_class = ReviewForm
+    success_url = '/posts'
+
+
 class FollowUsers(LoginRequiredMixin, View):
     template_name = ''
     User = get_user_model()
@@ -181,7 +212,6 @@ class FollowUsers(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         user_follows = UserFollows.objects.filter(user=request.user)
         user_followers = UserFollows.objects.filter(followed_user=request.user)
-        
         other_users = self.user_searching.exclude(username=request.user)
         for user in user_follows:
             other_users = other_users.exclude(username=user.followed_user)
@@ -215,33 +245,3 @@ class FollowUsers(LoginRequiredMixin, View):
             return redirect('subscription')
         
         return render(request, self.template_name, context=context)
-
-# def get_name(request):
-#     if request.method == 'POST':
-#         form1 = NameForm(request.POST, prefix='name')
-#         form2 = PersonForm(request.POST, prefix='person')
-#         if form1.is_valid() and form2.is_valid():
-#             # ...
-#             return HttpResponseRedirect('/thanks/')
-#     else:
-#         form1 = NameForm(prefix='name')
-#         form2 = PersonForm(prefix='person')
-#     return render(request, 'name.html', {'form1': form1, 'form2': form2})
-
-
-# class MyFormView(View):
-#     form_class = MyForm
-#     initial = {'key': 'value'}
-#     template_name = 'form_template.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         form = self.form_class(initial=self.initial)
-#         return render(request, self.template_name, {'form': form})
-#
-#     def post(self, request, *args, **kwargs):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             # <process form cleaned data>
-#             return HttpResponseRedirect('/success/')
-#
-#         return render(request, self.template_name, {'form': form})

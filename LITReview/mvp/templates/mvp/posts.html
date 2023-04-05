@@ -6,7 +6,7 @@
 {% block bootstrap5_extra_head %}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">{% endblock %}
 {% load mvp_extras %} {# a enlever après avoir intégrer annotate #}
 
-{% block title %}{% translate 'Flux' %}{% endblock %}
+{% block title %}{% translate 'Posts' %}{% endblock %}
 
 {% block content %}
     {% if messages %}
@@ -16,17 +16,17 @@
     {% endif %}
     <div class="container-lg">
         <div class=" px-4 py-2 my-3">
-            <div class="d-flex justify-content-around">
-                <a class="btn btn-primary" href="{% url 'create_ticket' %}">{% translate 'Asking a review' %}</a>
-                <a class="btn btn-primary" href="{% url 'create_ticket_review' %}">{% translate 'Create a review' %}</a>
-            </div>
+<!--            <div class="d-flex justify-content-around">-->
+<!--                <a class="btn btn-primary" href="{% url 'create_ticket' %}">{% translate 'Asking a review' %}</a>-->
+<!--                <a class="btn btn-primary" href="{% url 'create_ticket_review' %}">{% translate 'Create a review' %}</a>-->
+<!--            </div>-->
             <div class="d-flex row">
                 {% for instance in page_obj %}
                     {% if instance.content_type == 'TICKET' %}
-                        {% include 'mvp/partials/ticket_snippet.html' with ticket=instance %}
+                        {% include 'mvp/partials/ticket_editable_snippet.html' with ticket=instance %}
                     {% endif %}
                     {% if instance.content_type == 'REVIEW' %}
-                        {% include 'mvp/partials/review_snippet.html' with review=instance %}
+                        {% include 'mvp/partials/review_editable_snippet.html' with review=instance %}
                     {% endif %}
                 {% endfor %}
             </div>

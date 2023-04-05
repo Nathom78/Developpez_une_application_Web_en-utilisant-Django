@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block title %}{% translate 'Delete a review' %}{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            {% bootstrap_alert message.message|default:"" alert_type=message|bootstrap_message_alert_type extra_classes=message.extra_tags %}
+        {% endfor %}
+    {% endif %}
+    <div class="container-fluid">
+        <div class="px-4 pb-3 my-4 text-end">
+            <h2 class="text-center">{% translate 'Delete a review' %}</h2>
+               <form class="border bg-light mt-3" method="post">{% csrf_token %}
+                 <p>{% translate 'Are you sure you want to delete' %} "{{ object }}"?</p>
+                  {% bootstrap_form form %}
+                 <input type="submit" value="{% translate 'Confirm' %}">
+                </form>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
