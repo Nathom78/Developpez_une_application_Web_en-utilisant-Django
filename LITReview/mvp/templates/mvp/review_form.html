@@ -3,34 +3,48 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load get_poster_display from mvp_extras %}
+
 
 
 {% block title %}{% translate 'Create a review' %}{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="px-4 pb-3 my-4 text-end">
-        <h2 class="text-center">{% translate 'Create a ticket-review' %}</h2>
-
-        <form class="border bg-light mt-3" method="post" enctype="multipart/form-data" >
-            {% csrf_token %}
-            <h6 class="p-1 pt-2 my-0 text-start">{% translate 'Book / Article' %}</h6>
-            <div class="px-4 pt-3 pb-2">
-                {% bootstrap ticket label_class="d-flex text-start" %}
-            </div>
-            <div class="px-0 py-0 my-0 border-bottom border-dark border-2"></div>
-            <h6 class="px-1 pt-2 pb-0 my-0 text-start">{% translate 'Review' %}</h6>
-            <div class="px-4 pt-3 pb-2">
-                {% bootstrap_form form label_class="d-flex text-start" %}
-                <input type="submit" class="btn btn-secondary" value="Save">
-            </div>
-        </form>
-    </div>
-</div>
-
 {% if messages %}
     {% for message in messages %}
         {% bootstrap_alert message.message|default:"" alert_type=message|bootstrap_message_alert_type extra_classes=message.extra_tags %}
     {% endfor %}
 {% endif %}
+<div class="container-fluid">
+    <div class="px-4 pb-3 my-4 text-end">
+        <h2 class="text-center">{% translate 'Create a review' %}</h2>
+        <div class="border border rounded-3 bg-light my-2">
+            <div class="">
+                <h6 class="p-1 py-2 my-0 text-start">{% translate 'You are posting in reply to' %}</h6>
+                <div class=" bg-light mx-5 my-2 py-1">
+                    <div class="border border rounded-3 lh-1 p-1 p-md-2 mx-5 px-4 pt-3 pb-2 text-start">
+                        <p class="fw-light text-end">{{ ticket.time_created }}</p>
+                        <p>{% get_poster_display ticket.user %} {% translate 'have asked one ticket' %}</p>
+                        <h5>{{ ticket.title }}</h5>
+                        <p>{{ ticket.description }}</p>
+                        <div class="d-flex  justify-content-center">
+                             <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-0 py-0 my-0 border-bottom border-dark border-2"></div>
+            <form class="form class" method="post" >
+                {% csrf_token %}
+                <h6 class="px-1 pt-2 pb-0 my-0 text-start">{% translate 'Review' %}</h6>
+                <div class="px-4 pt-3 pb-2">
+                    {% bootstrap_form form label_class="d-flex text-start" %}
+                    <input type="submit" class="btn btn-secondary" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}

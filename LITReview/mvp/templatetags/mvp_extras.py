@@ -28,4 +28,4 @@ def get_range_one_to_x(value):
 def get_poster_display(context, user):
     if user == context['user']:
         return 'Tu'
-    return user.username
+    return user

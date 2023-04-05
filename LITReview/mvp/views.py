@@ -67,12 +67,12 @@ class Stream(LoginRequiredMixin, ListView):
         )
         return posts
     
-    def post(self, request, *args, **kwargs):
-        if 'goto' in request.POST:
-            ticket = request.POST.get('goto')
-            print(request)
-            print(ticket)
-            return redirect(MyFormsCreateReviewView(ticket))
+    # def post(self, request, *args, **kwargs):
+    #     if 'goto' in request.POST:
+    #         ticket = request.POST.get('goto')
+    #         print(request)
+    #         print(ticket)
+    #         return render(request, 'MyFormsCreateReviewView', {'ticket': ticket})
             
             # r'^reviews/(?P<ticket>[0-9]{4})/$' ticket=ticket)))
     #
@@ -131,24 +131,31 @@ class MyFormsCreateTicketReviewView(LoginRequiredMixin, CreateView):
 
 
 class MyFormsCreateReviewView(LoginRequiredMixin, CreateView):
-    
-    def __init__(self, ticket, *args, **kwargs):
-        super(CreateView, self).__init__(*args, **kwargs)
-        self.ticket = ticket
-    
     form_class = ReviewForm
     template_name = 'mvp/review_form.html'
-    success_url = 'stream'
+    success_url = '/stream'
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.ticket = Ticket.objects.get(pk=kwargs['ticket_id'])
+        return super(MyFormsCreateReviewView, self).dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
-        ticket = Ticket.object.get(pk=self.ticket.id)
         context_data = super(MyFormsCreateReviewView, self).get_context_data(**kwargs)
         context_data.update(
             {
-                'ticket_form': ticket,
+                'ticket': self.ticket,
             }
         )
         return context_data
+    
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            form.instance.user = self.request.user
+            form.instance.ticket = self.ticket
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class FollowUsers(LoginRequiredMixin, View):

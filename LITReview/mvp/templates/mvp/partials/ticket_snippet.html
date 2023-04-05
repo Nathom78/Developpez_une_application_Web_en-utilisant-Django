@@ -11,14 +11,9 @@
     </div>
     <div class="m-3 text-end">
         {% if not ticket|review_exist %}
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" class="col-2 btn btn-primary" name="goto" value="{{ ticket.id }}">
-                    {% translate 'Create a review' %}
-                </button>
-            </form>
-
+            <a href="{% url 'MyFormsCreateReviewView' ticket.id %}" class="col-2 btn btn-primary">
+                {% translate 'Create a review' %}
+            </a>
         {% endif %}
     </div>
-
 </div>

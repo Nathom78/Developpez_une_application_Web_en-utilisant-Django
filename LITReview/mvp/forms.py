@@ -36,4 +36,4 @@ class ReviewForm(ModelForm):
             'body': Textarea(attrs={"rows": "5"})
             
         }
-        fields = ['headline', 'body', 'rating']
+        fields = ['headline', 'rating', 'body']
