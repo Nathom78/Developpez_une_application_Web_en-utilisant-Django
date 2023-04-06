@@ -82,12 +82,11 @@ urlpatterns = [
     path('create_ticket_review', mvp.views.MyFormsCreateTicketReviewView.as_view(), name='create_ticket_review'),
     path('create_review/<int:ticket_id>', mvp.views.MyFormsCreateReviewView.as_view(),
          name='MyFormsCreateReviewView'),
-    path('posts/', mvp.views.Posts.as_view(template_name='mvp/posts.html'), name='posts'),
     path('update_ticket/<int:pk>', mvp.views.MyFormUpdateTicketView.as_view(), name='MyFormUpdateTicketView'),
     path('delete_ticket/<int:pk>', mvp.views.MyFormDeleteTicketView.as_view(), name='MyFormDeleteTicketView'),
     path('update_review/<int:pk>', mvp.views.MyFormUpdateReviewView.as_view(), name='MyFormUpdateReviewView'),
     path('delete_review/<int:pk>', mvp.views.MyFormDeleteReviewView.as_view(), name='MyFormDeleteReviewView'),
-    
+    path('posts/', mvp.views.Posts.as_view(template_name='mvp/posts.html'), name='posts'),
 ]
 if settings.DEBUG:
     urlpatterns += static(

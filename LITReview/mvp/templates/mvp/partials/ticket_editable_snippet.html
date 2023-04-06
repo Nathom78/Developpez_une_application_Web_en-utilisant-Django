@@ -11,9 +11,11 @@
     <p>{% get_poster_display ticket.user %} {% translate 'have asked one ticket' %}</p>
     <h5>{{ ticket.title }}</h5>
     <p>{{ ticket.description }}</p>
-    <div class="d-flex  justify-content-center">
-         <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
-    </div>
+    {% if ticket.image %}
+        <div class="d-flex  justify-content-center">
+             <img class="img-fluid" src="{{ ticket.image.url }}" alt="image-{{ ticket.title }}">
+        </div>
+    {% endif %}
     <div class="m-3 text-end">
         <a href="{% url 'MyFormUpdateTicketView' ticket.id %}" class="col-2 btn btn-primary">
             {% translate 'Edit' %}

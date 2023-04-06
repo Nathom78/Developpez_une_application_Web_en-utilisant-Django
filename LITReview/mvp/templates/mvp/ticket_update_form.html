@@ -5,7 +5,7 @@
 {% bootstrap_javascript %}
 
 
-{% block title %}{% translate 'Create a review' %}{% endblock %}
+{% block title %}{% translate 'Edit a ticket' %}{% endblock %}
 
 {% block content %}
     {% if messages %}
@@ -15,7 +15,7 @@
     {% endif %}
     <div class="container-fluid">
         <div class="px-4 pb-3 my-4 text-end">
-            <h2 class="text-center">{% translate 'Create a ticket-review' %}</h2>
+            <h2 class="text-center">{% translate 'Edit a ticket' %}</h2>
             <form class="border bg-light mt-3" method="post" enctype="multipart/form-data" >
                 {% csrf_token %}
                 <h6 class="p-1 pt-2 my-0 text-start">{% translate 'Book / Article' %}</h6>
