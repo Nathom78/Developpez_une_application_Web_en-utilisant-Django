@@ -164,12 +164,12 @@ class Posts(LoginRequiredMixin, ListView):
 class MyFormUpdateTicketView(LoginRequiredMixin, UpdateView):
     model = Ticket
     form_class = TicketForm
-    success_url = '/posts'
+    success_url = reverse_lazy('posts')
 
 
 class MyFormDeleteTicketView(LoginRequiredMixin, DeleteView):
     model = Ticket
-    success_url = '/posts'
+    success_url = reverse_lazy('posts')
     
     def delete(self, using=None, keep_parents=False):
         self.image.delete()
@@ -179,14 +179,14 @@ class MyFormDeleteTicketView(LoginRequiredMixin, DeleteView):
 class MyFormUpdateReviewView(LoginRequiredMixin, UpdateView):
     model = Review
     form_class = ReviewForm
-    success_url = reverse_lazy('/posts')
-    
+    success_url = reverse_lazy('posts')
    
 
 class MyFormDeleteReviewView(LoginRequiredMixin, DeleteView):
     model = Review
     form_class = ReviewForm
     success_url = '/posts'
+    
 
 
 class FollowUsers(LoginRequiredMixin, View):

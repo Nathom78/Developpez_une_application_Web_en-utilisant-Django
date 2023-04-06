@@ -1,5 +1,10 @@
-{% load get_range_one_to_x get_poster_display from mvp_extras %}
+{% load get_poster_display get_range_one_to_x from mvp_extras %}
 {% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block bootstrap5_extra_head %}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">{% endblock %}
+
 <div class="lh-1 p-1 p-md-2 border rounded-3 bg-light my-2 ">
     <p class="fw-light text-end">{{ review.time_created }}</p>
     <p>{% get_poster_display review.user %} {% translate 'have publied one review' %}</p>
@@ -18,15 +23,41 @@
         <h5>{{ review.ticket.title }}</h5>
         <p>{{ review.ticket.description }}</p>
         <div class="d-flex  justify-content-center">
-            <img class="img-fluid" src="{{ review.ticket.image.url }}" alt="image-{{ review.ticket.title }}">
+            {% if review.ticket.image %}
+                <img class="img-fluid" src="{{ review.ticket.image.url }}" alt="image-{{ review.ticket.title }}">
+            {% endif %}
         </div>
     </div>
     <div class="m-3 text-end">
         <a href="{% url 'MyFormUpdateReviewView' review.id %}" class="col-2 btn btn-primary">
             {% translate 'Edit' %}
         </a>
-        <a href="{% url 'MyFormDeleteReviewView' review.id %}" class="col-2 btn btn-primary">
-            {% translate 'Delete' %}
-        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <i class="bi bi-trash3"></i>
+        </button>
+
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">{% translate 'Deleting?' %}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{% translate 'Do you want delete the review' %} {{ review.id }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <form method="POST" action="{% url 'MyFormDeleteReviewView' review.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" type="submit" value="DELETE">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
