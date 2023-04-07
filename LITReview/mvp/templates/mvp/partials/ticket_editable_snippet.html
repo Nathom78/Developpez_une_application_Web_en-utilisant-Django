@@ -20,23 +20,24 @@
         <a href="{% url 'MyFormUpdateTicketView' ticket.id %}" class="col-2 btn btn-primary">
             {% translate 'Edit' %}
         </a>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ ticket.id }}">
             <i class="bi bi-trash3"></i>
         </button>
 
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade" id="staticBackdrop-{{ ticket.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel-{{ ticket.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ ticket.id }}">{% translate 'Deleting?' %}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>I will not close if you click outside of me. Don't even try to press escape key.</p>
+                        <p>{% translate 'Do you really want delete the ticket ' %} {{ ticket.id }}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
                         <form method="POST" action="{% url 'MyFormDeleteTicketView' ticket.id %}">
                             {% csrf_token %}
                             <button class="btn btn-primary" type="submit" value="DELETE">

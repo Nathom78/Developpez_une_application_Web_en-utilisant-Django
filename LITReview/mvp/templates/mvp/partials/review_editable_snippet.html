@@ -32,16 +32,16 @@
         <a href="{% url 'MyFormUpdateReviewView' review.id %}" class="col-2 btn btn-primary">
             {% translate 'Edit' %}
         </a>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ review.id }}">
             <i class="bi bi-trash3"></i>
         </button>
 
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade" id="staticBackdrop-{{ review.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel-{{ review.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">{% translate 'Deleting?' %}</h1>
+                        <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel-{{ review.id }}">{% translate 'Deleting?' %}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

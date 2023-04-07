@@ -14,12 +14,13 @@
         {% endfor %}
     {% endif %}
     <div class="container-fluid">
-        <div class="px-4 py-3 my-4 text-center">
-            <h2>{% translate 'Create a ticket' %}</h2>
-            <form class="p-4 p-md-4 border rounded-3 bg-light mt-3" method="post" enctype="multipart/form-data" >
+        <h2 class="text-center">{% translate 'Create a ticket' %}</h2>
+        <div class="px-4 py-2 my-4 text-end">
+
+            <form class="p-4 p-md-4 border rounded-3 bg-light mt-3" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                <input type="submit" class="form-control" value="Save">
+                {% bootstrap_form form label_class="d-flex text-start"%}
+                <input type="submit" class="btn btn-primary col-2" value="{% translate 'Save' %}">
             </form>
         </div>
     </div>

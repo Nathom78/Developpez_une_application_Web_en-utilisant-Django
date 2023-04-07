@@ -31,7 +31,9 @@
                 {% endfor %}
             </div>
             <div class="d-flex justify-content-center">
-               {% bootstrap_pagination page_obj %}
+                {% if page_obj.has_other_pages %}
+                    {% bootstrap_pagination page_obj %}
+                {% endif %}
             </div>
         </div>
     </div>

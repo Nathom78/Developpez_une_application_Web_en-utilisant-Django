@@ -29,10 +29,8 @@ import authentication.views
 import mvp.views
 
 urlpatterns = [
-    path('home', mvp.views.home, name='home'),
     path('admin/', admin.site.urls),
-    path(
-        '', LoginView.as_view(
+    path('', LoginView.as_view(
             template_name='login.html',
             redirect_authenticated_user=True
         ),

@@ -10,12 +10,11 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
-from django.db.models import Q
 
 from itertools import chain
 
 from .models import UserFollows, Ticket, Review
-from .forms import ReviewForm, TicketForm
+from .forms import ReviewForm, ReviewUpdateForm, TicketForm
 
 
 @login_required
@@ -29,7 +28,6 @@ def get_users_viewable_reviews(the_user):
     """
     all_user_follows = UserFollows.objects.filter(user=the_user)
     all_user_permitted = [couple.followed_user for couple in all_user_follows]
-    print(all_user_permitted)
     reviews = Review.objects.filter(user__in=all_user_permitted)
     if the_user.groups.filter(name='administrators').exists():
         reviews = Review.objects.exclude(user=the_user)
@@ -42,7 +40,6 @@ def get_users_viewable_tickets(the_user):
     """
     all_user_follows = UserFollows.objects.filter(user=the_user)
     all_user_permitted = [couple.followed_user for couple in all_user_follows]
-    print(all_user_permitted)
     tickets = Ticket.objects.filter(user__in=all_user_permitted)
     if the_user.groups.filter(name='administrators').exists():
         tickets = Ticket.objects.exclude(user=the_user)
@@ -72,7 +69,8 @@ class Stream(LoginRequiredMixin, ListView):
 
 class MyFormCreateTicketView(LoginRequiredMixin, CreateView):
     model = Ticket
-    fields = ['title', 'description', 'image']
+    form_class = TicketForm
+    # fields = ['title', 'description', 'image']
     success_url = 'stream'
     
     def form_valid(self, form):
@@ -87,7 +85,6 @@ class MyFormsCreateTicketReviewView(LoginRequiredMixin, CreateView):
     success_url = 'stream'
     
     def get_context_data(self, **kwargs):
-        
         context_data = super(MyFormsCreateTicketReviewView, self).get_context_data(**kwargs)
         context_data.update(
             {
@@ -165,6 +162,16 @@ class MyFormUpdateTicketView(LoginRequiredMixin, UpdateView):
     model = Ticket
     form_class = TicketForm
     success_url = reverse_lazy('posts')
+    template_name_suffix = '_update_form'
+    
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data.update(
+            {
+                'ticket': Ticket.objects.get(pk=self.object.id)
+            }
+        )
+        return context_data
 
 
 class MyFormDeleteTicketView(LoginRequiredMixin, DeleteView):
@@ -173,20 +180,28 @@ class MyFormDeleteTicketView(LoginRequiredMixin, DeleteView):
     
     def delete(self, using=None, keep_parents=False):
         self.image.delete()
-        super().delete()
+        super().delete(self.request)
 
 
 class MyFormUpdateReviewView(LoginRequiredMixin, UpdateView):
     model = Review
-    form_class = ReviewForm
+    form_class = ReviewUpdateForm
     success_url = reverse_lazy('posts')
-   
+    template_name_suffix = '_update_form'
+    
+    def get_context_data(self, **kwargs):
+        context_data = super(MyFormUpdateReviewView, self).get_context_data(**kwargs)
+        context_data.update(
+            {
+                'ticket': Ticket.objects.get(pk=self.object.ticket.id)
+            }
+        )
+        return context_data
+
 
 class MyFormDeleteReviewView(LoginRequiredMixin, DeleteView):
     model = Review
-    form_class = ReviewForm
-    success_url = '/posts'
-    
+    success_url = reverse_lazy('posts')
 
 
 class FollowUsers(LoginRequiredMixin, View):

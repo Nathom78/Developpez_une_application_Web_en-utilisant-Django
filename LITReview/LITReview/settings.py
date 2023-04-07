@@ -136,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authentication.MyUser'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'stream'
 LOGOUT_REDIRECT_URL = 'logout'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

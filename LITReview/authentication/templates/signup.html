@@ -4,21 +4,23 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}{% translate 'Sign Up' %}{% endblock %}
 
 {% block content %}
 
-  <div class="container col-xl-10 col-xxl-8 px-4 py-1">
-    <div class="row align-items-center g-lg-5 py-1">
-      <h2 class="text-center">{% translate 'Registration' %}</h2>
-      <div  class="col-md-10 mx-auto col-lg-5 py-2">
-        <form class="p-3 p-md-4 border rounded-3 bg-light" method="post">
-          {% csrf_token %}
-          {% bootstrap_form form %}
+<div class="container col-xl-10 col-xxl-8 px-4 py-1 my-4">
+  <div class="row align-items-center g-lg-5 py-1">
+    <h2 class="text-center">{% translate 'Registration' %}</h2>
+    <div  class="col-md-10 mx-auto col-lg-5 py-2">
+      <form class="p-3 p-md-4 border rounded-3 bg-light" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form label_class="d-flex text-start" %}
+        <div class="d-flex justify-content-end">
           <button class="btn btn-primary" type="submit">{% translate 'Sign Up' %}</button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
 {% endblock content%}

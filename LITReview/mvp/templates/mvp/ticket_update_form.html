@@ -4,7 +4,6 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
-
 {% block title %}{% translate 'Edit a ticket' %}{% endblock %}
 
 {% block content %}
@@ -20,13 +19,16 @@
                 {% csrf_token %}
                 <h6 class="p-1 pt-2 my-0 text-start">{% translate 'Book / Article' %}</h6>
                 <div class="px-4 pt-3 pb-2">
-                    {% bootstrap_form ticket_form label_class="d-flex text-start" %}
-                </div>
-                <div class="px-0 py-0 my-0 border-bottom border-dark border-2"></div>
-                <h6 class="px-1 pt-2 pb-0 my-0 text-start">{% translate 'Review' %}</h6>
-                <div class="px-4 pt-3 pb-2">
                     {% bootstrap_form form label_class="d-flex text-start" %}
-                    <input type="submit" class="btn btn-secondary" value="{% translate 'Update' %}">
+                    <div class="text-start">
+                        {% if ticket.image %}
+                            <img class="border border-3 border-white rounded" height=200 src="{{ ticket.image.url }}" alt="image-{{ ticket.image.url }}">
+                        {% endif %}
+                    </div>
+
+                </div>
+                <div class="px-4 pt-3 pb-2">
+                    <input type="submit" class="btn btn-primary col-2" value="{% translate 'Update' %}">
                 </div>
             </form>
         </div>
