@@ -32,26 +32,47 @@ Taper la commande suivante :
 Pour vérifier, taper cette commande :
 <pre><code>pip list</code></pre>
 Et vous devriez avoir :
-<pre><code>Package    Version
----------- -------
-asgiref    3.6.0
-Django     4.1.7
-pip        23.0.1
-setuptools 67.4.0
-sqlparse   0.4.3
-tzdata     2022.7
+<pre><code>Package           Version
+----------------- -------
+asgiref           3.6.0
+Django            4.1.7
+django-bootstrap5 22.2
+Pillow            9.4.0
+pip               23.0
+setuptools        67.1.0
+sqlparse          0.4.3
+tzdata            2022.7
+wheel             0.38.4
 </code></pre>
 
 ## 4. Execution du logiciel
 
+Dans une fenêtre de terminal, se placer à la racine de l'application
+ici LITReview, ensuite taper les commandes suivantes :
 
-Superuser : Thom / Thomas78190
+Tout d'abord, nous devons appliquer les migrations à la base de donnée,
+afin de pouvoir utiliser dans ce nouveau environment la base db.sqlite.3 importer. 
+<pre><code>
+(.env) PS Developpez_une_application_Web_en-utilisant-Django\LITReview> py manage.py migrate
+</code></pre>
 
-Users: Password: Thomas78190,
+Ensuite, nous pouvons lancer l'application à travers le serveur Django.
+
+<pre><code>
+(.env) PS Developpez_une_application_Web_en-utilisant-Django\LITReview> py manage.py runserver 
+</code></pre>
+
+Pour se connecter:
+
+Superuser : (rôle : Administrateur) Thom / Thomas78190
+
+Users: (rôle :utilisateur) Password: Thomas78190,
 - Kathy
 - Thomtest
 - Toto
+- Titi
 
+ou créer un nouveau membre, là plus facilement grâce à l'application, onglet  **_"s'inscrire"_**
 
 ## Technologies
 [![My Skills](https://skillicons.dev/icons?i=git,github,python,django&theme=dark)](https://skillicons.dev)
