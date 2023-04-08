@@ -14,7 +14,7 @@ class TicketForm(ModelForm):
 
 
 class ReviewForm(ModelForm):
-    
+
     class Meta:
         model = models.Review
         widgets = {
@@ -22,7 +22,7 @@ class ReviewForm(ModelForm):
                 attrs={"class": "d-flex gap-4 ps-3"},
                 choices=[('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]),
             'body': Textarea(attrs={"rows": "5"})
-            
+
         }
         fields = ['headline', 'rating', 'body']
         labels = {
@@ -33,7 +33,7 @@ class ReviewForm(ModelForm):
 
 
 class ReviewUpdateForm(ModelForm):
-    
+
     class Meta:
         model = models.Review
         widgets = {
@@ -42,7 +42,7 @@ class ReviewUpdateForm(ModelForm):
                 choices=[('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]
             ),
             'body': Textarea(attrs={"rows": "5"})
-            
+
         }
         fields = ['headline', 'rating', 'body']
         labels = {
@@ -50,4 +50,3 @@ class ReviewUpdateForm(ModelForm):
             'body': _('Body'),
             'rating': _('Rating')
         }
-        

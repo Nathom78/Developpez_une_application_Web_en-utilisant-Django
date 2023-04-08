@@ -8,17 +8,17 @@ def create_groups(apps, schema_migration):
     User = apps.get_model('authentication', 'MyUser')
     Group = apps.get_model('auth', 'Group')
     Permission = apps.get_model('auth', 'Permission')
-    
+
     add_ticket = Permission.objects.get(codename='add_ticket')
     change_ticket = Permission.objects.get(codename='change_ticket')
     delete_ticket = Permission.objects.get(codename='delete_ticket')
     view_ticket = Permission.objects.get(codename='view_ticket')
-    
+
     add_review = Permission.objects.get(codename='add_review')
     change_review = Permission.objects.get(codename='change_review')
     delete_review = Permission.objects.get(codename='delete_review')
     view_review = Permission.objects.get(codename='view_review')
-    
+
     administrator_permissions = [
         add_ticket,
         change_ticket,
@@ -29,21 +29,21 @@ def create_groups(apps, schema_migration):
         delete_review,
         view_review,
     ]
-    
+
     subscriber_permissions = [
         view_ticket,
         add_ticket,
         view_review,
         add_review,
     ]
-    
+
     administrators = Group(name='administrators')
     administrators.save()
     administrators.permissions.set(administrator_permissions)
     subscribers = Group(name='subscribers')
     subscribers.save()
     subscribers.permissions.set(subscriber_permissions)
-    
+
     for user in User.objects.all():
         if user.role == 'ADMINISTRATOR':
             administrators.user_set.add(user)
@@ -52,7 +52,7 @@ def create_groups(apps, schema_migration):
 
 
 class Migration(migrations.Migration):
-    
+
     dependencies = [
         ('authentication', '0001_initial'),
     ]

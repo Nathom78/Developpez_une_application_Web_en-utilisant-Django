@@ -23,25 +23,25 @@ class UserCreationForm(forms.ModelForm):
         widget=forms.PasswordInput,
         help_text=_("Enter the same password as before, for verification."),
     )
-    
+
     class Meta:
         model = MyUser
         fields = ('username', 'email', 'role')
-    
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if get_user_model().objects.filter(username__iexact=username) \
                 .exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError(_(u'The username ‘{}’ is already in use.'.format(username)))
         return username.capitalize()
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if get_user_model().objects.filter(email__iexact=email) \
                 .exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError(_(u'The email ‘{}’ is already in use.'.format(email)))
         return email
-    
+
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -49,7 +49,7 @@ class UserCreationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise ValidationError(_("Passwords don't match"))
         return password2
-    
+
     def _post_clean(self):
         """
         Use Validators for password.
@@ -64,13 +64,13 @@ class UserCreationForm(forms.ModelForm):
                 validate_password(password, self.instance)
             except ValidationError as error:
                 self.add_error("password2", error)
-    
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         password = self.cleaned_data["password1"]
         user.set_password(password)
-        
+
         if commit:
             user.save()
             if user.role == user.ADMINISTRATOR:
@@ -88,27 +88,21 @@ class UserChangeForm(forms.ModelForm):
     disabled password hash display field.
     """
     password = ReadOnlyPasswordHashField()
-    
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if get_user_model().objects.filter(username__iexact=username) \
                 .exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError(_(u'The username ‘{}’ is already in use.'.format(username)))
         return username.capitalize()
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if get_user_model().objects.filter(email__iexact=email) \
                 .exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError(_(u'The email ‘{}’ is already in use.'.format(email)))
         return email
-    
+
     class Meta:
         model = MyUser
         fields = ('username', 'role', 'email', 'password', 'is_active', 'is_admin')
-
-
-# class SignupForm(UserCreationForm):
-#     class Meta(UserCreationForm.Meta):
-#         model = get_user_model()
-#         fields = ('username', 'role', 'email', 'password1', 'password2')

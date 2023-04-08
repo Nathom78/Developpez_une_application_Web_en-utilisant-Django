@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
 
 from os import unlink
 from PIL import Image
@@ -13,22 +12,22 @@ class Ticket(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
-    
+
     IMAGE_MAX_SIZE = (800, 800)
-    
+
     def resize_image(self):
         image = Image.open(self.image)
         image.thumbnail(self.IMAGE_MAX_SIZE)
         # sauvegarde de l’image redimensionnée dans le système de fichiers
         # ce n’est pas la méthode save() du modèle !
         image.save(self.image.path)
-    
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.image:
             self.resize_image()
-    
-    def delete(self, using=None):
+
+    def delete(self, using=None, keep_parents=False):
         if self.image:
             unlink(self.image.path)
         super().delete()
@@ -51,10 +50,10 @@ class UserFollows(models.Model):
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='following_by'
         )
-    
+
     def __str__(self):
         return f"'user': {self.user.username}, 'followed_user':{self.followed_user.username}"
-    
+
     class Meta:
         # ensures we don't get multiple UserFollows instances for unique user-user_followed pairs
         constraints = [
