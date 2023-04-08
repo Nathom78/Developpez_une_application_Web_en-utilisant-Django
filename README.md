@@ -20,15 +20,25 @@ Ou utiliser [ce repository](https://github.com/Nathom78/Developpez_une_applicati
 <br>
 
 
-## 2. Installer l'API
+## 2. Installer un environment python
 
+D'abord créer à partir de la racine du projet un environment, ici appellé ".env"
+
+`PS D:\..\Developpez_une_application_Web_en-utilisant-Django> python -m venv .env`
+
+Ensuite activer l'environment python: 
+
+`PS D:\..\Developpez_une_application_Web_en-utilisant-Django> .env\Scripts\activate.ps1`
 
 
 ## 3. Installer les paquets nécessaires aux projets ( Juste pour apporter des améliorations)
 
 <br>
 Taper la commande suivante : 
-<pre> pip install -r requirements.txt </pre>
+<pre><code>
+pip install -r requirements.txt
+</code></pre>
+
 Pour vérifier, taper cette commande :
 <pre><code>pip list</code></pre>
 Et vous devriez avoir :
