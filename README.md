@@ -20,18 +20,18 @@ Ou utiliser [ce repository](https://github.com/Nathom78/Developpez_une_applicati
 <br>
 
 
-## 2. Installer un environment python
+## 2. Installer un environnement python
 
-D'abord créer à partir de la racine du projet un environment, ici appellé ".env"
+D'abord créer à partir de la racine du projet un environnement, ici appellé ".env"
 
 `PS D:\..\Developpez_une_application_Web_en-utilisant-Django> python -m venv .env`
 
-Ensuite activer l'environment python: 
+Ensuite activer l'environnement python: 
 
 `PS D:\..\Developpez_une_application_Web_en-utilisant-Django> .env\Scripts\activate.ps1`
 
 
-## 3. Installer les paquets nécessaires aux projets ( Juste pour apporter des améliorations)
+## 3. Installer les paquets nécessaires aux projets.
 
 <br>
 Taper la commande suivante : 
@@ -61,7 +61,7 @@ Dans une fenêtre de terminal, se placer à la racine de l'application
 ici LITReview, ensuite taper les commandes suivantes :
 
 Tout d'abord, nous devons appliquer les migrations à la base de donnée,
-afin de pouvoir utiliser dans ce nouveau environment la base db.sqlite.3 importer. 
+afin de pouvoir l'utiliser dans ce nouveau environnement la base db.sqlite.3 importer. 
 <pre><code>
 (.env) PS Developpez_une_application_Web_en-utilisant-Django\LITReview> py manage.py migrate
 </code></pre>
@@ -72,11 +72,11 @@ Ensuite, nous pouvons lancer l'application à travers le serveur Django.
 (.env) PS Developpez_une_application_Web_en-utilisant-Django\LITReview> py manage.py runserver 
 </code></pre>
 
-Pour se connecter:
+Pour se connecter :
 
 Superuser : (rôle : Administrateur) Thom / Thomas78190
 
-Users: (rôle :utilisateur) Password: Thomas78190,
+Users : (rôle :utilisateur) Password: Thomas78190,
 - Kathy
 - Thomtest
 - Toto
