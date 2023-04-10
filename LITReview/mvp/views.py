@@ -251,6 +251,8 @@ class FollowUsers(LoginRequiredMixin, View):
                         return redirect('subscription')
                 elif followed_user == request.user:
                     messages.add_message(request, messages.ERROR, _("It can't be yourself."))
+                elif followed_user not in other_users:
+                    messages.add_message(request, messages.ERROR, _("User is already followed."))
 
         if 'Unsubscribe' in request.POST:
             name = request.POST.get('Unsubscribe')

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-07 11:38+0200\n"
+"POT-Creation-Date: 2023-04-10 17:29+0200\n"
 "PO-Revision-Date: 2023-03-16 15:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -190,13 +190,14 @@ msgstr "Envoyer moi les instructions !"
 msgid "Password reset on %(site_name)s by Thomas"
 msgstr ""
 
+#: .\authentication\templates\signup.html:7
+#: .\authentication\templates\signup.html:19 .\templates\base.html:45
+msgid "Sign Up"
+msgstr "S'inscrire"
+
 #: .\authentication\templates\signup.html:13
 msgid "Registration"
 msgstr "Inscrivez-vous dès maintenant !"
-
-#: .\authentication\templates\signup.html:18 .\templates\base.html:45
-msgid "Sign Up"
-msgstr "S'inscrire"
 
 #: .\authentication\validators.py:9
 msgid "Password must contain a letter."
@@ -314,6 +315,12 @@ msgstr "Vous postez en réponse à"
 msgid "Review"
 msgstr "Critique"
 
+#: .\mvp\templates\mvp\review_form.html:42
+#: .\mvp\templates\mvp\ticket_form.html:23
+#: .\mvp\templates\mvp\ticket_review_form.html:29
+msgid "Save"
+msgstr "Enregistrer"
+
 #: .\mvp\templates\mvp\review_update_form.html:8
 #: .\mvp\templates\mvp\review_update_form.html:19
 msgid "Edit a review"
@@ -342,13 +349,9 @@ msgid "Confirm"
 msgstr "Confirmer"
 
 #: .\mvp\templates\mvp\ticket_form.html:8
-#: .\mvp\templates\mvp\ticket_form.html:18
+#: .\mvp\templates\mvp\ticket_form.html:17
 msgid "Create a ticket"
 msgstr "Créer un ticket"
-
-#: .\mvp\templates\mvp\ticket_form.html:22
-msgid "Save"
-msgstr "Enregistrer"
 
 #: .\mvp\templates\mvp\ticket_review_form.html:18
 msgid "Create a ticket-review"
@@ -371,6 +374,10 @@ msgstr "L'utilisateur n'existe pas."
 #: .\mvp\views.py:253
 msgid "It can't be yourself."
 msgstr "Cela ne peut pas être vous-même."
+
+#: .\mvp\views.py:255
+msgid "User is already followed."
+msgstr "L'utilisateur est deja suivi"
 
 #: .\templates\base.html:41
 msgid "Sign out"
