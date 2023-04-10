@@ -131,6 +131,7 @@ class MyFormsCreateReviewView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
+        self.object = None
         if form.is_valid():
             form.instance.user = self.request.user
             form.instance.ticket = self.ticket
