@@ -95,10 +95,13 @@ class MyFormsCreateTicketReviewView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form_review = self.get_form(form_class=ReviewForm)
         form_ticket = self.get_form(form_class=TicketForm)
+        self.object = None
 
         if form_ticket.is_valid():
             form_ticket.instance.user = self.request.user
             form_ticket.save()
+        else:
+            return self.form_invalid(form_ticket)
 
         if form_review.is_valid():
             form_review.instance.user = self.request.user
