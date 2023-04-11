@@ -3,5 +3,6 @@ exclude =
     .git,
     __pycache__,
     .env/,
-    .idea/
+    .idea/,
+    */migrations/,
 max-line-length = 119
